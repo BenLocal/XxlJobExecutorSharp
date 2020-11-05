@@ -47,5 +47,4 @@ public class FirstJobHandler : IXxlJobExecutorHandler
 ```
 
 #### Refer
-[DotXxlJobExecutor][DotXxlJobExecutor]
-[DotXxlJobExecutor]: https://github.com/linzhiqiang/DotXxlJobExecutor "DotXxlJobExecutor"
+- [DotXxlJobExecutor](https://github.com/linzhiqiang/DotXxlJobExecutor "DotXxlJobExecutor")
