@@ -5,14 +5,14 @@ Startup.cs
 ```csharp
  public void ConfigureServices(IServiceCollection services)
  {
-	 services.AddXxlJob(options =>
-						{
-							options.XxlJobAdminUrl = "http://localhost:8080/xxl-job-admin";
-							options.Token = "token";
-							options.HeartbeatIntervalSecond = 10;
-							options.ExecutorAppName = "test";
-							options.ExecutorUrl = "http://localhost:19187/api/xxljob/";
-						});
+	services.AddXxlJob(options =>
+	{
+		options.XxlJobAdminUrl = "http://localhost:8080/xxl-job-admin";
+		options.Token = "token";
+		options.HeartbeatIntervalSecond = 10;
+		options.ExecutorAppName = "test";
+		options.ExecutorUrl = "http://localhost:19187/api/xxljob/";
+	});
  }
 
 ...
@@ -24,7 +24,7 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 
 Create job handler
 ```csharp
-[XxlJobHandler("first")]
+[XxlJobHandler("first")] // "first" is job handler name
 public class FirstJobHandler : IXxlJobExecutorHandler
 {
 	private readonly ILogger<FirstJobHandler> _logger;
