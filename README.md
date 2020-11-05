@@ -1,9 +1,6 @@
 # XxlJobExecutorSharp
  Apsnet core for xxlJob Executor
 
-Refer to
-
-
 Startup.cs
 ```csharp
  public void ConfigureServices(IServiceCollection services)
