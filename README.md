@@ -1,6 +1,9 @@
 # XxlJobExecutorSharp
  Apsnet core for xxlJob Executor
 
+Refer to
+
+
 Startup.cs
 ```csharp
  public void ConfigureServices(IServiceCollection services)
@@ -43,3 +46,6 @@ public class FirstJobHandler : IXxlJobExecutorHandler
 }
 ```
 
+#### Refer
+[DotXxlJobExecutor][DotXxlJobExecutor]
+[DotXxlJobExecutor]: https://github.com/linzhiqiang/DotXxlJobExecutor "DotXxlJobExecutor"
