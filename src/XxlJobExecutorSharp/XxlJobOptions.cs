@@ -1,11 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.Extensions.DependencyInjection;
+using XxlJobExecutorSharp.Entity;
 
 namespace XxlJobExecutorSharp
 {
     public class XxlJobOptions
     {
+        /// <summary>
+        /// 最小30秒
+        /// </summary>
         public int HeartbeatIntervalSecond { get; set; }
 
         /// <summary>
@@ -21,7 +24,7 @@ namespace XxlJobExecutorSharp
         /// <summary>
         /// xxljob调度中心根地址 如：http://localhost:8080/xxl-job-admin/
         /// </summary>
-        public string XxlJobAdminUrl { get; set; }
+        public string AdminUrl { get; set; }
 
         /// <summary>
         /// 当前执行器节点地址 如：http://localhost:55860/api/xxljob/
@@ -29,18 +32,12 @@ namespace XxlJobExecutorSharp
         public string ExecutorUrl { get; set; }
 
         /// <summary>
-        /// 线程执行器线程数 默认为Environment.ProcessorCount * 2
-        /// </summary>
-        public int TaskExecutorThreadCount { get; set; }
-
-        /// <summary>
-        /// httpJobHandler的url根地址
-        /// </summary>
-        public string HttpJobhandlerUrl { get; set; }
-
-        /// <summary>
         /// 最少3次
         /// </summary>
         public int CallBackRetryCount { get; set; }
+
+        public Action<FailedInfo> FailedCallback { get; set; }
+
+        public ServiceLifetime HandlerServiceLifetime { get; set; } = ServiceLifetime.Scoped;
     }
 }

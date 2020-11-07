@@ -43,7 +43,8 @@ namespace XxlJobExecutorSharp.Processor
         {
             Task.Factory.StartNew(async () =>
             {
-                _logger.LogInformation($"开始定时注册执行器,间隔{_options.HeartbeatIntervalSecond}秒......");
+                var heartbeatIntervalSecond = Math.Max(_options.HeartbeatIntervalSecond, 30);
+                _logger.LogInformation($"开始定时注册执行器,间隔{heartbeatIntervalSecond}秒......");
                 try
                 {
                     // Registry
@@ -52,7 +53,7 @@ namespace XxlJobExecutorSharp.Processor
                         try
                         {
                             await _xxlJobExecutor.RegistryExecutor();
-                            await Task.Delay(TimeSpan.FromSeconds(_options.HeartbeatIntervalSecond), cancellationToken);
+                            await Task.Delay(TimeSpan.FromSeconds(heartbeatIntervalSecond), cancellationToken);
                         }
                         catch (TaskCanceledException)
                         {
@@ -61,7 +62,7 @@ namespace XxlJobExecutorSharp.Processor
                         catch (Exception ex)
                         {
                             _logger.LogError(ex, "xxljob注册执行器错误，重试中......");
-                            await Task.Delay(TimeSpan.FromSeconds(_options.HeartbeatIntervalSecond), cancellationToken);
+                            await Task.Delay(TimeSpan.FromSeconds(heartbeatIntervalSecond), cancellationToken);
                         }
                     }
                 }

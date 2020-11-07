@@ -32,7 +32,7 @@ namespace XxlJobExecutorSharp
         {
             if (disposing)
             {
-                Task.Run(() => StopInnerAsync(new CancellationToken()));
+                XxlJobUtilExtensions.RunSync(async () => await StopInnerAsync(new CancellationToken()));
             }
         }
 

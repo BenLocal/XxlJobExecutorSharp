@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using XxlJobExecutorSharp.Abstractions;
@@ -56,7 +57,7 @@ namespace XxlJobExecutorSharp
             var route = _routeTable.FindByPattern(subUrl);
             if (route != null)
             {
-                var controller = context.RequestServices.GetService(route.TypeController) as IJobController;
+                var controller = context.RequestServices.GetRequiredService(route.TypeController) as IJobController;
                 if (controller != null)
                 {
                     try
@@ -65,7 +66,6 @@ namespace XxlJobExecutorSharp
 
                         if (response != null)
                         {
-                            context.Response.ContentType = "application/json; charset=utf-8";
                             await context.Response.WriteAsync(response.ExecuteResult(context), Encoding.UTF8);
                             return;
                         }

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -19,11 +15,11 @@ namespace XxlJobExecutorWeb
         {
             services.AddXxlJob(options =>
             {
-                options.XxlJobAdminUrl = "http://localhost:8080/xxl-job-admin";
+                options.AdminUrl = "http://localhost:8080/xxl-job-admin";
                 options.Token = "LDgVTSL2m3oEZMvgMAtJzEhhD8rT0bRpQXQ8583E";
                 options.HeartbeatIntervalSecond = 10;
                 options.ExecutorAppName = "test";
-                options.ExecutorUrl = "https://localhost:44329/api/xxljob/";
+                options.ExecutorUrl = "http://localhost:19187/api/xxljob/";
             });
         }
 

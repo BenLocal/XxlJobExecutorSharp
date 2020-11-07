@@ -12,6 +12,13 @@ namespace XxlJobExecutorSharp.Entity
             Msg = msg;
         }
 
+        public ReturnT(int code, string msg, object content)
+        {
+            Code = code;
+            Msg = msg;
+            Content = content;
+        }
+
         [JsonProperty("code")]
         public int Code { get; set; }
         [JsonProperty("msg")]
@@ -27,6 +34,11 @@ namespace XxlJobExecutorSharp.Entity
         public static ReturnT Success(string msg = "success")
         {
             return new ReturnT(XxlJobConstant.HTTP_SUCCESS_CODE, msg);
+        }
+
+        public static ReturnT Success(object content, string msg = "success")
+        {
+            return new ReturnT(XxlJobConstant.HTTP_SUCCESS_CODE, msg, content);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using XxlJobExecutorSharp.Abstractions;
 
 namespace XxlJobExecutorSharp.Services
@@ -8,9 +10,13 @@ namespace XxlJobExecutorSharp.Services
     {
         private readonly IServiceProvider _provider;
 
-        public XxlJobServicesProvider(IServiceProvider provider)
+        private readonly IHttpContextAccessor _contextAccessor;
+
+        public XxlJobServicesProvider(IServiceProvider provider,
+            IHttpContextAccessor contextAccessor)
         {
             _provider = provider;
+            _contextAccessor = contextAccessor;
         }
 
 
@@ -28,7 +34,19 @@ namespace XxlJobExecutorSharp.Services
 
         private Func<string, object> GetService()
         {
-            return (Func<string, object>)_provider.GetService(typeof(Func<string, TInterface>));
+            var provider = GetServiceProvider();
+            return (Func<string, object>)provider.GetRequiredService(typeof(Func<string, TInterface>));
+        }
+
+        private IServiceProvider GetServiceProvider()
+        {
+            if (_contextAccessor?.HttpContext?.RequestServices == null)
+            {
+                var scope = _provider.CreateScope();
+                return scope.ServiceProvider;
+        }
+
+            return _contextAccessor?.HttpContext?.RequestServices;
         }
     }
 }
