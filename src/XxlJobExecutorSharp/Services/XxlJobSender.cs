@@ -95,15 +95,13 @@ namespace XxlJobExecutorSharp.Services
 
             try
             {
-                await handler.Execute(new JobExecuteContext(job.Id, job.ExecutorParams));
+                return await handler.Execute(new JobExecuteContext(job.Id, job.ExecutorParams));
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "xxljob执行任务错误");
                 return ReturnT.Failed(e.Message);
             }
-
-            return ReturnT.Success();
         }
     }
 }

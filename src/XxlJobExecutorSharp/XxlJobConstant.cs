@@ -25,5 +25,13 @@
         /// COVER_EARLY=覆盖之前调度 
         /// </summary>
         public const string EXECUTORBLOCKSTRATEGY_COVER_EARLY = "COVER_EARLY";
+
+        public const string LOGGER_SCOPE_JOBID_KEY = "id";
+
+        public const string LOGGER_SCOPE_JOBLOGID_KEY = "logId";
+
+        public const string LOGGER_SCOPE_JOBAREA_KEY = "area";
+
+        public const string LOGGER_SCOPE_JOBAREA_VALUE = "job_handler";
     }
 }

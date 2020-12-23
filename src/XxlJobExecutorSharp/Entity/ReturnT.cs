@@ -31,6 +31,12 @@ namespace XxlJobExecutorSharp.Entity
         {
             return new ReturnT(XxlJobConstant.HTTP_FAIL_CODE, msg);
         }
+
+        public static ReturnT Failed(object content, string msg)
+        {
+            return new ReturnT(XxlJobConstant.HTTP_FAIL_CODE, msg, content);
+        }
+
         public static ReturnT Success(string msg = "success")
         {
             return new ReturnT(XxlJobConstant.HTTP_SUCCESS_CODE, msg);

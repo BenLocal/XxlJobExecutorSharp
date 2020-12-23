@@ -5,9 +5,11 @@ using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using RestSharp;
 using XxlJobExecutorSharp.Abstractions;
 using XxlJobExecutorSharp.Entity;
+using XxlJobExecutorSharp.Logger;
 using XxlJobExecutorSharp.Processor;
 using XxlJobExecutorSharp.Services;
 
@@ -32,6 +34,7 @@ namespace XxlJobExecutorSharp
             services.AddSingleton<IJobDispatcher, JobDispatcher>();
             services.AddSingleton<IJobSender, XxlJobSender>();
             services.AddTransient<XxlJobQueue>();
+            services.AddSingleton<IJobLoggerStore, LiteDBLoggerStore>();
 
             // route
             var routeTable = new XxlJobRouteTable();
@@ -70,6 +73,11 @@ namespace XxlJobExecutorSharp
         {
             app.UseMiddleware<XxlJobMiddleware>();
 
+            var loggerFactory = app.ApplicationServices.GetRequiredService<ILoggerFactory>();
+            loggerFactory.AddProvider(new CustomJobLoggerProvider(
+                          new JobLoggerConfiguration
+                          {
+                          }, app.ApplicationServices.GetRequiredService<IJobLoggerStore>()));
             return app;
         }
 
@@ -100,7 +108,7 @@ namespace XxlJobExecutorSharp
         {
             // get all types
             var typesToRegisterAndAttr = XxlJobUtilExtensions.CollectByAttributeTypes<XxlJobHandlerAttribute>()
-                    .Where(x => x.Item1.IsClass).ToList();
+                    .Where(x => x.Item1.IsClass && !x.Item1.IsAbstract).ToList();
 
             var types = typesToRegisterAndAttr.Select(x =>
             {

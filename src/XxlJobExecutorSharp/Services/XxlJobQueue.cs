@@ -73,14 +73,24 @@ namespace XxlJobExecutorSharp.Services
                 {
                     try
                     {
-                        var result = await _sender.Execute(job);
-                        if (result.Code == XxlJobConstant.HTTP_FAIL_CODE)
+                        var properies = new Dictionary<string, object>
                         {
-                            _logger.LogError($"执行失败. Id:{job.Id}, Msg: {result.Msg}");
-                        }
+                            [XxlJobConstant.LOGGER_SCOPE_JOBID_KEY] = job.Id,
+                            [XxlJobConstant.LOGGER_SCOPE_JOBLOGID_KEY] = job.LogId,
+                            [XxlJobConstant.LOGGER_SCOPE_JOBAREA_KEY] = XxlJobConstant.LOGGER_SCOPE_JOBAREA_VALUE
+                        };
+                        using (_logger.BeginScope(properies))
+                        {
+                            var result = await _sender.Execute(job);
 
-                        job.CallBackCode = result.Code;
-                        job.Reason = result.Msg;
+                            if (result.Code == XxlJobConstant.HTTP_FAIL_CODE)
+                            {
+                                _logger.LogError($"执行失败. Id:{job.Id}, Msg: {result.Msg}");
+                            }
+
+                            job.CallBackCode = result.Code;
+                            job.Reason = result.Content.SerializeObject();
+                        }
                         await _sender.CallBack(new List<JobMessage>() { job });
                     }
                     catch (Exception ex)
